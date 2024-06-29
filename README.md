@@ -1,25 +1,18 @@
-### building a spaced repetition model with duolingo data
 
-##### agenda for 6/28/2024
 
-first session
+agenda for 6/28/2024
 
-- overview of the objective
+##### overview of the objective
 
-well timed reviews help people learn better
-what does well-timed mean?
-enough time such that the answer to the review question is not super obvious
-but not so much time that the answer is completely out of memory
+well timed reviews help people learn better - according to well established results in the cog sci of learning (and according to common sense). what does well-timed mean? enough time such that the answer to the review question is not super obvious - but not so much time that the answer is completely out of memory.
+ 
+once you've been exposed to a vocab word in a language you are studying (in this scenario, you are not studying immersively), the clock starts on the decay of your memory of the word. if you review the word immediately after learning it, you will almost certainly remember what it means. but if you wait for a long time - say, a year - you will probably not be able to recall its meaning. you can see that in both cases the review is not timed well. it'd be better to review the word when you have a decent shot at remembering (the probability of recall is not too low) but also have to work for it a little bit (..and not too high). so the `next time you review` should be decided as a function of the `probability of recall`. 
 
-`next_review(x_user,x_item)`
+but what is the `probability of recall` a function of, and what kind of function is it?
 
-`p_recall(x_user,x_item)`
+it is thought to decay exponentially in time.
 
-next_review should be something like, when `p_recall` is predicted to be .5
-
-so we're going to build (learn) these functions
-
-- quick pass over the duolingo paper
+quick pass over the duolingo paper
 
 notes:
 
@@ -39,19 +32,19 @@ e.g. `x` could be the history of my reviews of the spanish word gato `x` = (# of
 
 `theta` is a vector of weights representing the importance of each value in `x` to predicting the probability of recall
 
-e.g. suppose # of times reviewed is twice as important as # of times correctly recalled `theta` = (theta_1,theta_2) = (.002, .001)
+e.g. imagine if # of times reviewed is twice as important as # of times correctly recalled `theta` = (theta_1,theta_2) = (.002, .001)
 
-`x*theta` = .002*12 + .001*8 = .032
-
-`predicted half life = 2**(x*theta)`
+we then apply the weights `theta` to features `x` with a dot product.
 
 so in our particular case
 
+`x*theta` = .002*12 + .001*8 = .032
+
 `predicted half life = 2**.032` which is approximately 1
 
-predicted probability of recall is `2**-(1/1) = 1/2`
+and predicted probability of recall is `2**-(1/1) = 1/2`
 
-two big tasks
+two tasks ahead
 
 - find good features `x`
 - learn good feature weights `theta`
@@ -62,32 +55,12 @@ in general ML works like this
 
 we want to learn some function parameters (in our case we want to know what `theta` should be)
 
-we set up an objective
+we set up an objective to minimize the error between predicted and observed data then kick off a iterative learning process to obtain the best parameters we can in the context of the model we chose - in ML this is called gradient descent.
 
-minimize the error between predicted and observed data
 
-what is the observed data in our case?
+depending on the type of the data you are trying to predict, and the model that you use, there are different ways to quantify the error of your predictions. for example, if we are trying to predict `y` as a function of `x` and `y` is continuous, we might use linear regression `f(x) = W*x = y_hat` (no intercept, for simplicity).
 
-we know the recall rate (correct review rate) we have a historical correct review rate, and we call this observed p (the probability of recall)
-
-compare observed p to predicted p - and quantify how wrong the prediction is
-
-observed p = .9
-predicted p = .5
-
-`observed p - predicted p = .9 - .5 = .4`
-
-kick off a iterative learning process - in ML this is called gradient descent
-
-`error()`
-
-in ML - depending on the type of the data you are trying to predict, and the model that you use there are different to quantify the error of your predictions.
-
-we are trying to predict `y` and `y` is continuous
-
-and suppose we use linear regression to build a function `f(x) = W*x = y_hat`
-
-and we want to compare `y` to `y_hat` to see how wrong we are
+we will want to compare `y` to `y_hat` to see how wrong we are
 
 a popular loss function (error function) is mean squared error
 
@@ -102,7 +75,7 @@ for i in range(df.shape[0]):
 
 ```
 
-- formulate next steps
+next steps
 
 - EDA
 - (possibly) preprocessing
