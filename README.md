@@ -70,7 +70,7 @@ mse = 0
 
 for i in range(df.shape[0]):
 
-    squared_difference = (df['y'] - df['y_hat'])**2
+    squared_difference = (df.loc[i,'y'] - df.loc[i,'y_hat'])**2
     mse += squared_difference
 
 ```
