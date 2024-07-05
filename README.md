@@ -1,6 +1,11 @@
+agenda for 7/5
 
+- recap of last time 
+- feature engineering - one hot encoding lexeme attributes
+- check for more feature engineering opportunities - using kaggle and duolingo paper/code as references
+- set up the learning objective 
 
-agenda for 6/28/2024
+agenda for 6/28
 
 ##### overview of the objective
 
