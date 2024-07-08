@@ -25,7 +25,7 @@ they use the half-life model to represent decay in probability of recall
 
 ```python
 
-p = 2**(delta/half_life)
+p = 2**(-1*(delta/half_life))
 
 ```
 
