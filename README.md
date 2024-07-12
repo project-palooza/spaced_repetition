@@ -1,3 +1,22 @@
+agenda for 7/12
+
+##### recap of last time
+
+- feature engineering - vectorizing parts of speech for practiced words //
+-- expecting 92 unique tokens, but saw many more
+- talked about the model
+-- introduced pytorch
+-- object oriented programming (since we need write a custom model class)
+
+##### today
+
+- circle back on feature engineering - finish it (for now)
+- focus on the model
+- review its components (conceptually)
+- see how its implemented
+- possibly, we will try to optimize the function with something like gradient descent.
+
+
 agenda for 7/5
 
 - recap of last time 
