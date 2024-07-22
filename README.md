@@ -1,3 +1,109 @@
+agenda for 7/19
+
+##### recap of last time
+
+- conceptual review and understanding the inner workings of the half-life model
+
+##### today
+
+- if the model development pipeline consists of the following steps
+-- **data preprocessing and validation** (our data is clean and makes sense)
+-- **conceptual understanding of the modeling task** (predicting a half-life for the memory of a word)
+-- **feature engineering** (we're not doing it yet - we're simply taking the features that are already there)
+-- **model specification** (writing the model class in pytorch)
+-- **finding good parameters** for the model/ optimization
+-- **model evaluation** (judging how good the model is)
+
+we will quickly move through the entire process first to make sure we have the right ideas at each step.
+
+then we will improve our work at each step in subsequent passes.
+
+in other words, we are agile.
+
+- we will try to fit our model
+- we need to evaluate it against a baseline model
+- **baseline model**:
+-- naive model: always predict p_recall to be 50% (in other words: shrug, complete ignorance)
+-- slightly less naive model: leitner system and pimsleur method
+
+compare leitner system and pimsleur method to our model.
+
+1. we will take the error between observed p_recall and leitner/pimsleur
+2. we will take the error between observed p_recall and our model
+
+and if 1. is greater than 2. then our model is an improvement over the baseline.
+
+**a few more words about baseline**:
+
+classification/regression ML tasks have naive baseline models as well.
+
+**classification**
+
+suppose we are predicting who will default on a loan (not pay it back) using logistic regression.
+
+what is the naive baseline model in this scenario?
+
+more context: suppose the class balance (ratio between those who pay and those who don't) is 2:1
+
+if you had no information about a specific customer and their loan, what would be a good baseline prediction?
+
+random guessing = guess that they will pay with 67% probability
+
+in other words: if your model is to always predict "will pay back" your accuracy is 67%
+
+so if your logistic regression CANNOT beat accuracy 67% then it is USELESS (no better than having a constant prediction).
+
+**regression**
+
+you are predicting home values for a real estate website.
+
+you will use a regression model.
+
+what is the naive baseline model?
+
+if you always predict the mean you will have an R-squared of 0.
+
+if your regression model has an R-squared close to 0, then it is useless because you can always just predict the mean and perform just as well.
+
+**classification - of cancer in a medical image**
+
+we could use the base rate of non-cancer vs cancer. suppose it is 10:1
+
+so if you always predict non-cancer you will have 91% accuracy.
+
+but is this really the best baseline model?
+
+**how do we decide if there's cancer in an image when we don't have an ML model?**
+
+traditionally, human doctors look at images and decide if there's cancer.
+
+what is the classification accuracy of doctors?
+
+if the accuracy of human doctors is 96%
+
+**we need to beat 96% accuracy**
+
+**question**:
+
+1. model 1: always predict non-cancer --> accuracy: 91%
+2. model 2: use trained human --> accuracy: 96%
+
+definition of accuracy:
+
+correct predictions / total predictions
+
+correct predictions = {true positives, true negatives}
+
+true positive: predicted cancer, truly cancer
+true negative: predicted non-cancer, truly non-cancer
+
+example data:
+
+100 images, 9 are cancerous, 91 are not
+
+model 1 accuracy: (0 + 91)/100, has 9 false negatives
+model 2 accuracy: (5 + 91)/100, they have 4 false negatives
+
 agenda for 7/12
 
 ##### recap of last time
