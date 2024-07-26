@@ -1,3 +1,30 @@
+agenda for 7/26
+
+##### recap of last time
+
+- we tried to fit the first spaced repetition model, we used only 2 features: history_seen, history_correct
+- we preprocessed the data to get into form to allow pytorch to process it
+- we got stuck, due to some errors in model fitting - due to a problem we didn't recognize
+
+- we actually later found out that we were ran into the exploding gradients problem.
+- to solve this, we simply need to scale the data.
+
+##### today
+
+- we'll fit a model
+- we'll evaluate how good the initial model is
+- we'll have a menu of options for what to do next
+
+**menu**:
+
+- feature engineering
+- comparison against other baseline models
+-- simple naive baseline: to always predict 50% recall
+-- leitner system, pimsleur system - these are models that have been used for a long time.
+- how can we improve the model training process. are we training for long enough, are we choosing the correct hyperparameters (learning rate, regularization strength (how big of a penalty term should we have))
+- so far we're only working with 1% of the data (12k rows out of 1.2M) eventually we will want to train the model on all the data. 
+
+
 agenda for 7/19
 
 ##### recap of last time
@@ -20,8 +47,7 @@ then we will improve our work at each step in subsequent passes.
 
 in other words, we are agile.
 
-- we will try to fit our model
-- we need to evaluate it against a baseline model
+- we will try to fit our model and we need to evaluate it against a baseline model
 - **baseline model**:
 -- naive model: always predict p_recall to be 50% (in other words: shrug, complete ignorance)
 -- slightly less naive model: leitner system and pimsleur method
