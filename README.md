@@ -1,3 +1,17 @@
+agenda for 8/2
+
+##### recap of last time
+
+- successfully completed a training run
+- we started to explore the performance of the model
+
+##### today
+
+- retrain the model, more data, and a longer training run
+- write some code for model eval
+- train some baseline models to compare it against
+
+
 agenda for 7/26
 
 ##### recap of last time
