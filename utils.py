@@ -1,4 +1,5 @@
 import torch
+import matplotlib.pyplot as plt
 
 def standardize_torch_vector(vec): # z-score 
     mean = vec.mean(dim=0, keepdim=True)
@@ -34,3 +35,18 @@ def mape_rmse_rsq(y_true,y_pred):
     rsq = r_squared(y_true,y_pred)
 
     return mape,rmse,rsq
+
+
+def training_run_evaluator(model_name,y_true,y_pred):
+    """we should add more model eval stuff to this"""
+    plt.figure()
+    plt.hist(y_pred.detach().numpy(),color = "red",alpha = .3,label = 'predicted',bins=50)
+    plt.hist(y_true.detach().numpy(),color = "blue",alpha = .3,label = 'observed',bins = 50)
+    plt.legend()
+    plt.title(f"{model_name} vs actual")
+    
+    fig = plt.gcf()
+
+    return fig
+
+

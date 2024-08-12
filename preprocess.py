@@ -5,6 +5,16 @@ import torch
 from utils import minmax_torch_vector
 from torch.utils.data import DataLoader, TensorDataset
 
+# if we do the clipping pre-normalization
+# we should no longer minmax scale p
+# should we still minmax scale h though?
+
+def hclip(series,min_half_life = .010 ,max_half_life = 274.0):
+    return series.clip(lower=min_half_life, upper=max_half_life)
+
+def pclip(series,min_p_recall = .0001 ,max_p_recall = .9999):
+    return series.clip(lower=min_p_recall, upper=max_p_recall)
+
 def sr_data_reader(p = .001):
     
     df = pd.read_csv(
@@ -19,9 +29,14 @@ def sr_data_reader(p = .001):
     df["delta_days"] = np.round(df.loc[:,"delta"].copy()/(60*60*24),1)
     df.drop(columns = ["delta"],inplace=True)
     # add cushion to zero
-    df.loc[df["p_recall"] == 0,"p_recall"] = df.loc[df["p_recall"] == 0,"p_recall"] + 1e-3
+    df['p_recall'] = pclip(df['p_recall'])
     # define observed half life
-    df["h"] = -1*df["delta_days"]/(np.log2(df["p_recall"]) + 1e-3)
+    df["h"] = hclip(-1*df["delta_days"]/(np.log2(df["p_recall"])))
+    # clip half life (15 min - 274 day max)
+
+    #   p = pclip(float(row['p_recall']))
+    #     t = float(row['delta'])/(60*60*24)  # convert time delta to days
+    #     h = hclip(-t/(math.log(p, 2)))
 
     return df
 
@@ -34,7 +49,7 @@ def sr_data_loader(df,batch_size,simple=True):
     else:
         raise NotImplementedError
     
-    p = minmax_torch_vector(torch.tensor(df['p_recall'].values, dtype=torch.float32))
+    p = torch.tensor(df['p_recall'].values, dtype=torch.float32)
     h = minmax_torch_vector(torch.tensor(df['h'].values, dtype=torch.float32))
     delta = minmax_torch_vector(torch.tensor(df['delta_days'].values, dtype=torch.float32))
     dataset = TensorDataset(x, p, h, delta)
